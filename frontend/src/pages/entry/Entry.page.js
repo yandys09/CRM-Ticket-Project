@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Jumbotron } from "react-bootstrap";
 import { LoginForm } from "../../components/login/Login.comp";
 import "./entry.style.css";
+import { ResetPassword } from "../../components/password-reset/PasswordReset.comp";
 
 export const Entry = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [frmLoad, setFrmLoad] = useState("login");
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -25,24 +27,47 @@ export const Entry = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
-    return alert("Fill up all the form!");
+      return alert("Fill up all the form!");
+    }
+    // TODO call api to submit the form
+    console.log(email, password);
+  }
+
+  const handleOnResetSubmit = (e) => {
+    e.preventDefault();
+    if (!email ) {
+      return alert("Please enter the email!");
     }
 
-    // TODO call api to submit the form
-    console.log(email, password)
-
+    // TODO call api to Reset submit the form
+    console.log(email);
   };
+
+  const formSwitcher = frmType => {
+    setFrmLoad(frmType);
+  }
 
   return (
     <div className="entry-page bg-info">
       <Jumbotron className="form-box">
-        <LoginForm
-          handleOnChange={handleOnChange}
-          handleOnSubmit={handleOnSubmit}
-          email={email}
-          pass={password}
-        />
+        {frmLoad === "login" && (
+          <LoginForm
+            handleOnChange={handleOnChange}
+            handleOnSubmit={handleOnSubmit}
+            formSwitcher={formSwitcher}
+            email={email}
+            pass={password}
+          />
+        )}
+        {frmLoad === "reset" && (
+          <ResetPassword
+            handleOnChange={handleOnChange}
+            handleOnResetSubmit={handleOnResetSubmit}
+            formSwitcher={formSwitcher}
+            email={email}
+          />
+        )}
       </Jumbotron>
     </div>
   );
-};
+        }
