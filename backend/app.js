@@ -16,12 +16,19 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 // set body bodyParser
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const port = process.env.PORT || 3001;
 
-// Routers
+// Load routers
+const userRouter = require("./src/routers/user.router");
+const ticketRouter = require("./src/routers/ticket.router");
+
+// Use Routers
+app.use("/v1/user", userRouter);
+app.use("/v1/ticket", ticketRouter);
+
 app.use("/", (req, res) => {
   res.json({ message: "Hi there!!~~~" });
 });
